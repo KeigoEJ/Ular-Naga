@@ -53,8 +53,9 @@ public class ARPauseMenu : MonoBehaviour
         RenderTexture.active = null;
         rt.Release();
 
-        // 🔥 Fix orientation (flip horizontally) <-- **** THIS IS THE CHANGED LINE ****
+        // 🔥 Fix orientation (flip horizontally AND vertically)
         freezeTexture = FlipTextureHorizontally(freezeTexture);
+        freezeTexture = FlipTextureVertically(freezeTexture);
 
         // Apply to UI and stretch to fill
         if (freezeImage != null)
@@ -104,7 +105,6 @@ public class ARPauseMenu : MonoBehaviour
         isPaused = false;
     }
 
-    // **** THIS IS THE NEW FUNCTION I ADDED ****
     private Texture2D FlipTextureHorizontally(Texture2D original)
     {
         Texture2D flipped = new Texture2D(original.width, original.height, original.format, false);
