@@ -5,6 +5,7 @@ public class AndroidPermission : MonoBehaviour
 {
     void Start()
     {
+        Debug.Log("PERMISSION SCRIPT RUNNING!");
 #if UNITY_ANDROID
         // Android 13+ permission
         if (!Permission.HasUserAuthorizedPermission("android.permission.READ_MEDIA_IMAGES"))
