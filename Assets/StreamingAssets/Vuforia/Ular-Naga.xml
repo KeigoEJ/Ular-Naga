@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig>
+  <Tracking>
+    <ImageTarget name="20-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="19-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="18-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="17-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="16-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="15-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="14-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="13-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="12-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="11-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="10-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="9-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="8-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="7-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="6-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="5-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="4-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="3-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="2-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="1-darecard" size="1.000000 1.415126" />
+    <ImageTarget name="20-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="19-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="18-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="17-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="16-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="15-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="14-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="13-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="12-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="11-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="10-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="9-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="8-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="7-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="6-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="5-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="4-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="3-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="2-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="1-wildcard" size="1.000000 1.415126" />
+    <ImageTarget name="20-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="19-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="18-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="17-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="16-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="15-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="14-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="13-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="12-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="11-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="10-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="9-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="8-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="7-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="6-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="5-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="4-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="3-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="2-truthcard" size="1.000000 1.415126" />
+    <ImageTarget name="1-truthcard" size="1.000000 1.415126" />
+  </Tracking>
+</QCARConfig>
