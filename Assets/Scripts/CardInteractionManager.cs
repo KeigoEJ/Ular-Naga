@@ -1,63 +1,154 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Vuforia; // Don't forget this!
+using Vuforia;
 
 public class CardInteractionManager : MonoBehaviour
 {
-    [Header("Vuforia Targets")]
-    public ObserverBehaviour card1Target; // Drag your Image Target 1 here
-    public ObserverBehaviour card2Target; // Drag your Image Target 2 here
+    // 1. DEEPEST LEVEL: The Individual Character
+    [System.Serializable]
+    public class CharacterData
+    {
+        public string name = "Character Name"; // Just for label
+        public Animator animator;
+        public float myDanceDuration = 3.0f; // <-- UNIQUE DURATION FOR THIS SPECIFIC CHAR
+    }
 
-    [Header("Characters")]
-    public Animator char1Animator; // Drag Char 1's Animator here
-    public Animator char2Animator; // Drag Char 2's Animator here
+    // 2. MID LEVEL: The Interaction Set (Cards + Characters)
+    [System.Serializable]
+    public class InteractionSet
+    {
+        public string setName = "Card Pair Set";
+        
+        [Header("The Cards Required")]
+        public List<ObserverBehaviour> cardTargets;
 
-    [Header("Animation Settings")]
-    public string paramName = "isInteracting"; // The name of your Bool parameter
+        [Header("The Characters in this Set")]
+        // We use the new List<CharacterData> instead of just Animators
+        public List<CharacterData> characters; 
+        
+        [HideInInspector] public bool isCurrentlyActive = false;
+    }
 
-    private bool isTriggered = false;
+    [Header("Configuration")]
+    [SerializeField] private List<InteractionSet> interactionSets;
+
+    [Header("Animation Triggers")]
+    [SerializeField] private string interactionBool = "isInteracting";
+    [SerializeField] private string danceTrigger = "Dance";
+
+    private bool isBusyDancing = false;
 
     void Update()
     {
-        // Check the status of both cards
-        bool card1Seen = IsTracked(card1Target);
-        bool card2Seen = IsTracked(card2Target);
+        if (isBusyDancing) return;
 
-        // LOGIC: If BOTH are seen, trigger the special animation
-        if (card1Seen && card2Seen)
+        CheckAllSets();
+    }
+
+    void CheckAllSets()
+    {
+        foreach (var set in interactionSets)
         {
-            if (!isTriggered)
+            bool allCardsVisible = true;
+
+            // Check Card Visibility
+            foreach (var target in set.cardTargets)
             {
-                ActivateInteraction(true);
-                isTriggered = true;
+                if (!IsTracked(target))
+                {
+                    allCardsVisible = false;
+                    break;
+                }
             }
-        }
-        // If one or both are lost, go back to default
-        else
-        {
-            if (isTriggered)
+
+            // Logic: Switch between Interaction and Idle
+            if (allCardsVisible)
             {
-                ActivateInteraction(false);
-                isTriggered = false;
+                if (!set.isCurrentlyActive)
+                {
+                    // Loop through the custom CharacterData list
+                    foreach (var charData in set.characters)
+                    {
+                        if (charData.animator != null && charData.animator.isActiveAndEnabled)
+                            charData.animator.SetBool(interactionBool, true);
+                    }
+                    set.isCurrentlyActive = true;
+                }
+            }
+            else
+            {
+                if (set.isCurrentlyActive)
+                {
+                    foreach (var charData in set.characters)
+                    {
+                        if (charData.animator != null && charData.animator.isActiveAndEnabled)
+                            charData.animator.SetBool(interactionBool, false);
+                    }
+                    set.isCurrentlyActive = false;
+                }
             }
         }
     }
 
-    // Helper function to check if Vuforia sees the target
+    public void TriggerAllDance()
+    {
+        if (!isBusyDancing)
+        {
+            StartCoroutine(DanceRoutine());
+        }
+    }
+
+    IEnumerator DanceRoutine()
+    {
+        isBusyDancing = true;
+        float globalLongestWaitTime = 0f;
+
+        // 1. Reset Interaction & Trigger Dance
+        foreach (var set in interactionSets)
+        {
+            // Turn off interaction boolean first
+            foreach (var charData in set.characters)
+            {
+                if (charData.animator != null) 
+                    charData.animator.SetBool(interactionBool, false);
+            }
+            set.isCurrentlyActive = false;
+
+            // Trigger Dance & Calculate Wait Time
+            foreach (var charData in set.characters)
+            {
+                if (charData.animator != null && charData.animator.gameObject.activeInHierarchy)
+                {
+                    // Trigger the dance
+                    charData.animator.SetTrigger(danceTrigger);
+
+                    // COMPARE: Is this character's dance longer than the current record holder?
+                    // If yes, we must wait for THIS character to finish.
+                    if (charData.myDanceDuration > globalLongestWaitTime)
+                    {
+                        globalLongestWaitTime = charData.myDanceDuration;
+                    }
+                }
+            }
+        }
+
+        // Safety net: if no one is visible, wait 1 sec just in case
+        if (globalLongestWaitTime <= 0.1f) globalLongestWaitTime = 1.0f;
+
+        Debug.Log($"Dancing! System locked for {globalLongestWaitTime} seconds (longest clip).");
+
+        // 2. Wait for the LONGEST character to finish
+        yield return new WaitForSeconds(globalLongestWaitTime);
+
+        // 3. Unlock
+        isBusyDancing = false;
+    }
+
     bool IsTracked(ObserverBehaviour target)
     {
         if (target == null) return false;
-        return target.TargetStatus.Status == Status.TRACKED || 
+        return target.TargetStatus.Status == Status.TRACKED ||
                target.TargetStatus.Status == Status.EXTENDED_TRACKED;
-    }
-
-    // Helper function to switch animations
-    void ActivateInteraction(bool state)
-    {
-        if (char1Animator != null) char1Animator.SetBool(paramName, state);
-        if (char2Animator != null) char2Animator.SetBool(paramName, state);
-        
-        Debug.Log(state ? "Special Move Activated!" : "Back to Idle");
     }
 }
