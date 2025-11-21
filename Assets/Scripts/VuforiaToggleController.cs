@@ -1,65 +1,88 @@
 using UnityEngine;
-using Vuforia; // Make sure you have this using directive!
+using Vuforia;
+using System.Collections;
+using System.Collections.Generic; // Needed for Lists
 
 public class VuforiaToggleController : MonoBehaviour
 {
     [Header("Vuforia Components")]
-    // You MUST drag your ARCamera from the scene here
     public VuforiaBehaviour vuforiaBehaviour;
+
+    [Header("Cleanup Settings")]
+    [Tooltip("Drag all your Image Targets (or the 3D models inside them) here.")]
+    public List<GameObject> arObjectsToClean; 
 
     private bool isVuforiaRunning = true;
 
     void Start()
     {
-        // Check if the user dragged the component in the inspector
+        // Automatic setup if you forgot to drag the camera
         if (vuforiaBehaviour == null)
         {
-            Debug.Log("VuforiaBehaviour not set, trying to find ARCamera...");
-            // If not, try to find it on the ARCamera
-            GameObject arCamera = GameObject.Find("ARCamera"); // Assumes your camera is named "ARCamera"
+            GameObject arCamera = GameObject.Find("ARCamera");
             if (arCamera != null)
-            {
                 vuforiaBehaviour = arCamera.GetComponent<VuforiaBehaviour>();
-            }
         }
 
-        if (vuforiaBehaviour == null)
-        {
-            Debug.LogError("FATAL ERROR: VuforiaBehaviour component not found! " +
-                           "Please drag your ARCamera object to the 'Vuforia Behaviour' slot in the Inspector.");
-        }
-        else
-        {
-            // Assume it's running by default
+        if (vuforiaBehaviour != null)
             isVuforiaRunning = vuforiaBehaviour.enabled;
-        }
     }
 
-    /// <summary>
-    /// Call this from your "Camera Off" UI Button
-    /// </summary>
     public void TurnCameraOff()
     {
         if (isVuforiaRunning && vuforiaBehaviour != null)
         {
-            // This is the NEW correct way to stop Vuforia
+            // 1. HIDE ALL AR OBJECTS FIRST (Clean the screen)
+            ToggleARObjects(false);
+
+            // 2. Stop the engine
             vuforiaBehaviour.enabled = false;
             isVuforiaRunning = false;
-            Debug.Log("Vuforia Toggled OFF");
+            
+            Debug.Log("Vuforia OFF and Screen Cleaned");
         }
     }
 
-    /// <summary>
-    /// Call this from your "Camera On" UI Button
-    /// </summary>
     public void TurnCameraOn()
     {
         if (!isVuforiaRunning && vuforiaBehaviour != null)
         {
-            // This is the NEW correct way to start Vuforia
+            // 1. Start the engine
             vuforiaBehaviour.enabled = true;
             isVuforiaRunning = true;
-            Debug.Log("Vuforia Toggled ON");
+
+            // 2. ALLOW OBJECTS TO BE SEEN AGAIN
+            // (They will stay hidden until Vuforia tracks the image again)
+            ToggleARObjects(true);
+
+            // 3. RESET TRACKING (Fresh start)
+            if (vuforiaBehaviour.DevicePoseBehaviour != null)
+            {
+                vuforiaBehaviour.DevicePoseBehaviour.Reset();
+            }
+
+            // 4. Autofocus
+            StartCoroutine(TriggerAutofocus());
+
+            Debug.Log("Vuforia ON and Fresh");
         }
+    }
+
+    // Helper function to loop through your list
+    private void ToggleARObjects(bool state)
+    {
+        foreach (GameObject obj in arObjectsToClean)
+        {
+            if (obj != null)
+            {
+                obj.SetActive(state);
+            }
+        }
+    }
+
+    private IEnumerator TriggerAutofocus()
+    {
+        yield return new WaitForSeconds(0.5f); 
+        VuforiaBehaviour.Instance.CameraDevice.SetFocusMode(FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
     }
 }
