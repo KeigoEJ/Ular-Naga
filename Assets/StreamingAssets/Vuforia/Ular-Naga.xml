@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig>
   <Tracking>
+    <ImageTarget name="4-charactercard" size="1.000000 1.415126" />
+    <ImageTarget name="3-charactercard" size="1.000000 1.415126" />
+    <ImageTarget name="2-charactercard" size="1.000000 1.415126" />
+    <ImageTarget name="1-charactercard" size="1.000000 1.415126" />
     <ImageTarget name="20-darecard" size="1.000000 1.415126" />
     <ImageTarget name="19-darecard" size="1.000000 1.415126" />
     <ImageTarget name="18-darecard" size="1.000000 1.415126" />
