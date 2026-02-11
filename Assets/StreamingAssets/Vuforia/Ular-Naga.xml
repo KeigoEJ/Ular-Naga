@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig>
   <Tracking>
+    <ImageTarget name="dragon_wind" size="1.000000 1.052632" />
+    <ImageTarget name="dragon_water" size="1.000000 1.068762" />
+    <ImageTarget name="dragon_earth" size="1.000000 1.079439" />
+    <ImageTarget name="dragon_fire" size="1.000000 1.027027" />
     <ImageTarget name="4-charactercard" size="1.000000 1.415126" />
     <ImageTarget name="3-charactercard" size="1.000000 1.415126" />
     <ImageTarget name="2-charactercard" size="1.000000 1.415126" />
